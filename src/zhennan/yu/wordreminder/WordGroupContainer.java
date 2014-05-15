@@ -1,6 +1,8 @@
 package zhennan.yu.wordreminder;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -30,6 +32,13 @@ public class WordGroupContainer {
 		for (char character : RefreshContentIterator.CHARS) {
 			ArrayList<WordGroup> groupArr = wordGroupContainer.get(character);
 			if (groupArr != null) {
+				Collections.sort(groupArr, new Comparator<WordGroup>() {
+
+					@Override
+					public int compare(WordGroup lhs, WordGroup rhs) {
+						return lhs.groupid - rhs.groupid;
+					}
+				});
 				for (int i1 = 0; i1 < groupArr.size(); i1++) {
 					WordGroup group = groupArr.get(i1);
 					if (group.getUntested() != null) {
