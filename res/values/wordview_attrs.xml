@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<resources>
+  <declare-styleable name="WordView">
+      <!-- when you do a drag, the item being dragged is moving down
+      , and a blank gap is left above,
+       ,collapsed_height is the height of the gap
+       ,and when the item that moving upward simultaneously hit this gap
+       , it cannot overcome it -->
+    <attr name="word_size" format="dimension" />
+    <attr name="word_meaning_size" format="dimension" />
+    <attr name="word_color" format="color" />
+    <attr name="word_meaning_color" format="color" />
+    <attr name="word" format="string" />
+    <attr name="word_meaning" format="string" />
+  </declare-styleable>
+</resources>

@@ -1,0 +1,113 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:wordview="http://schemas.android.com/apk/res/zhennan.yu.wordreminder"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/word_page"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/black"
+    tools:context=".MainActivity" >
+
+    <ViewFlipper
+        android:id="@+id/flipper"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dip"
+        android:layout_marginTop="30dp"
+        android:flipInterval="2300"
+        android:keepScreenOn="true" >
+        
+	<zhennan.yu.wordreminder.WordView
+	    android:id="@+id/current_word1"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+		style="@style/WordViewStyle"/>
+	
+	<zhennan.yu.wordreminder.WordView
+	    android:id="@+id/current_word2"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    wordview:word_size="13dp"
+	    wordview:word_meaning_size="8dp"
+	   	style="@style/WordViewStyle"/>
+
+    </ViewFlipper>
+
+    <RelativeLayout
+        android:id="@+id/l_btn_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:visibility="invisible" >
+
+        <Button
+            android:id="@+id/l_know_btn"
+            android:background="@drawable/selector"
+            android:text="bingo"
+            style="@style/TestActivityBingoBtnStyle"/>
+
+        <Button
+            android:id="@+id/l_stop_btn"
+            android:layout_below="@+id/l_know_btn"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/selector"
+            android:text="start"
+            style="@style/TestActivityBingoBtnStyle" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/r_btn_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:visibility="invisible" >
+
+        <Button
+            android:id="@+id/r_know_btn"
+            android:background="@drawable/selector"
+            android:text="bingo"
+            style="@style/TestActivityBingoBtnStyle" />
+
+        <Button
+            android:id="@+id/r_stop_btn"
+            android:layout_below="@+id/r_know_btn"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/selector"
+            android:text="start"
+            style="@style/TestActivityBingoBtnStyle" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:visibility="invisible"
+        android:id="@+id/test_or_memorize"
+        android:layout_width="fill_parent"
+        android:background="#7FFFFFFF"
+        android:layout_height="75dp"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true" >
+
+        <Button
+            android:id="@+id/want_to_memorize"
+            android:layout_weight="1"
+            android:layout_margin="1dp"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="@drawable/selector"
+            android:text="Memorize"
+            android:gravity="center"
+            android:textSize="26sp" />
+        
+        <Button
+            android:layout_weight="1"
+            android:layout_margin="1dp"
+            android:id="@+id/want_to_test"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="@drawable/selector"
+            android:gravity="center"
+            android:text="Test"
+            android:textSize="26sp" />
+    </LinearLayout>
+
+</RelativeLayout>

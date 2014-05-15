@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="zhennan.yu.wordreminder"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <uses-sdk
+        android:minSdkVersion="17"
+        android:targetSdkVersion="17" />
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.GET_TASKS" />
+    <uses-permission android:name="android.permission.REORDER_TASKS" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+	<uses-permission android:name="android.permission.ACCESS_SUPERUSER" />
+	
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+        <receiver android:name="zhennan.yu.wordreminder.WordReminderFloatView$BootReceiver" >
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <category android:name="android.intent.category.HOME" />
+            </intent-filter>
+        </receiver>
+        
+        <service android:name="zhennan.yu.wordreminder.ExternalDBObserver"/>
+        
+        <!-- StartActivity can't be set with the attribute android:launchMode="singleTask"
+         if set, after you press home to switch to launcher and then click the app icon to launch it ,
+         it will start the app allover again, because single task will do a clear top job when you start it again from 
+         launcher  -->
+        <activity
+            android:name="zhennan.yu.wordreminder.StartActivity"
+            android:label="@string/app_name"
+            android:alwaysRetainTaskState="true"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="zhennan.yu.wordreminder.BrowseActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="zhennan.yu.wordreminder.TestingActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+    </application>
+
+</manifest>
