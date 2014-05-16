@@ -95,7 +95,7 @@ class StartAdapter extends BaseAdapter {
         if (datasource.get(position).category.equals(Config.CATEGORY_FORGOTTEN)) {
         	holder.text.setTextColor(COLOR_FORGOTTEN);
 		}
-        else if(datasource.get(position).category.equals(Config.CATEGORY_RANDOM)){
+        else if(datasource.get(position).category.equals(Config.CATEGORY_REMEMBERED)){
         	holder.text.setTextColor(COLOR_REMEMBER);
 		}
         else {

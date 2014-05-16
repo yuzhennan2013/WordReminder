@@ -121,7 +121,7 @@ public class BrowseActivity extends Activity implements
 			arrayList.clear();
 		}
 		Cursor cursor = null;
-		if (mIndexItem.category.equals(Config.CATEGORY_RANDOM)) {
+		if (mIndexItem.category.equals(Config.CATEGORY_REMEMBERED)) {
 			mMoveButton.setText(alphabeticOrder);
 			cursor = DBManager.getInstance(this)
 					.queryRememberByInitialCharacter(mIndexItem.initialchar, "word ASC", mIndexItem.groupid);

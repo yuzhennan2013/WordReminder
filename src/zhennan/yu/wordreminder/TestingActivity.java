@@ -253,7 +253,7 @@ public class TestingActivity extends Activity {
 		refreshContentFilter.addContent(new Content(mIndexItem.initialchar, mIndexItem.groupid));
 		
 		Cursor cursor = null;
-		if (mIndexItem.category.equals(Config.CATEGORY_RANDOM)) {
+		if (mIndexItem.category.equals(Config.CATEGORY_REMEMBERED)) {
 			cursor = DBManager.getInstance(this).queryRememberByInitialCharacter(mIndexItem.initialchar, null, mIndexItem.groupid);
 			prepareDatasource(cursor, Config.MAXCOUNTEACHTEST, Config.MAXCOUNTEACHTEST);
 		} else if (mIndexItem.category.equals(Config.CATEGORY_FORGOTTEN)) {
