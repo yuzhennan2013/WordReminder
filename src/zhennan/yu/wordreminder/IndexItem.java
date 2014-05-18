@@ -27,19 +27,11 @@ public class IndexItem implements Serializable{
 		StringBuilder sBuilder = new StringBuilder();
 		sBuilder.append(initialchar);
 		sBuilder.append(groupid);
-<<<<<<< HEAD
 		sBuilder.append("(");
 		sBuilder.append(category);
 		sBuilder.append(":");
 		sBuilder.append(count);
 		sBuilder.append(")");
-=======
-		sBuilder.append("( ");
-		sBuilder.append(category);
-		sBuilder.append(" : ");
-		sBuilder.append(count);
-		sBuilder.append(" )");
->>>>>>> fc3f929bc6fcf86a3f48d5eacf20bf4afa4e3e85
 		return sBuilder.toString();
 	}
 }
