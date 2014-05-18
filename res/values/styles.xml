@@ -1,0 +1,44 @@
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!--
+        Base application theme, dependent on API level. This theme is replaced
+        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
+    -->
+    <style name="AppBaseTheme" parent="android:Theme.Light">
+        <!--
+            Theme customizations available in newer API levels can go in
+            res/values-vXX/styles.xml, while customizations related to
+            backward-compatibility can go here.
+        -->
+    </style>
+    
+   	<style name="TestActivityBingoBtnStyle">
+   	    <item name="android:layout_width">100dp</item>
+   	    <item name="android:layout_height">62dp</item>
+		<item name="android:textSize">25dp</item>
+		<item name="android:gravity">center</item>
+    </style>
+   	
+   	<style name="progressdialog" parent="@android:style/Theme.Dialog">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowIsFloating">true</item><!--是否浮现在activity之上-->
+        <item name="android:windowIsTranslucent">false</item><!--半透明-->
+        <item name="android:windowNoTitle">true</item><!--无标题-->
+     	<item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:backgroundDimEnabled">false</item><!--模糊-->
+        <!-- <item name="android:windowContentOverlay">@null</item> -->
+    </style>
+   	
+   	<style name="WordViewStyle">
+   	        <item name="word_size">13dp</item>
+    		<item name="word_meaning_size">8dp</item>
+    		<item name="word_color">@android:color/white</item>
+    		<item name="word_meaning_color">@android:color/white</item>
+    </style>
+   	
+    <!-- Application theme. -->
+    <style name="AppTheme" parent="AppBaseTheme">
+        <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+    </style>
+
+</resources>

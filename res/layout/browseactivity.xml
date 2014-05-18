@@ -1,0 +1,27 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/browse_root_view"
+    android:background="@android:color/black" >
+
+    <ListView
+        android:listSelector="@drawable/list_selector"
+        android:scrollbars="none"
+        android:id="@+id/word_list"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" >
+    </ListView>
+
+    <Button 
+        android:text="D ↓"
+        android:id="@+id/move_btn"
+        android:background="@drawable/selector"
+        android:textSize="20sp"
+        android:padding="10dp"
+        android:layout_gravity="right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        />
+    
+</FrameLayout>

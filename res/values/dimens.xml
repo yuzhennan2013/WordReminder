@@ -1,0 +1,8 @@
+<resources>
+
+
+    <!-- 浮动图片的宽高 -->
+    <dimen name="gamehall_float_width">50dip</dimen>
+    <dimen name="gamehall_float_height">50dip</dimen>
+
+</resources>
