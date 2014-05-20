@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.concurrent.CountDownLatch;
 
+import cn.sina.youxi.util.CV_Log;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.ClipData;
@@ -69,6 +71,10 @@ public class TestingActivity extends Activity {
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		// TODO Auto-generated method stub
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
+			CV_Log.i_f("back button pressed !");
+			CV_Log.i_f("alwaysInMemoriseMode is " + alwaysInMemoriseMode);
+			CV_Log.i_f("startPressed is " + startPressed);
+			CV_Log.i_f("bingoPressed is " + bingoPressed);
 			if (alwaysInMemoriseMode) {
 				startpageNeedRefresh = false;
 			} else {
@@ -80,12 +86,13 @@ public class TestingActivity extends Activity {
 					startpageNeedRefresh = false;
 				}
 			}
-
+			CV_Log.i_f("startpageNeedRefresh is " + startpageNeedRefresh);
 			Intent resultIntent = new Intent();
 			resultIntent.putExtra("startpageNeedRefresh", startpageNeedRefresh);
 			resultIntent.putExtra("refreshContentFilter", refreshContentFilter);
 			setResult(RESULT_OK, resultIntent);
 			finish();
+			CV_Log.i_f(TAG + " finished !");
 		}
 		return super.onKeyDown(keyCode, event);
 	}

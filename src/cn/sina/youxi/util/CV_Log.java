@@ -15,6 +15,8 @@ import android.os.Environment;
 public class CV_Log {
 	
 	private static File externalTraceFile;
+	private static long MAX_LOG_SIZE = 10 * 1024;
+	
 	/**
 	 * init the log context
 	 * @param context, when context is provided
@@ -132,7 +134,10 @@ public class CV_Log {
 		if (i_log_str == null || i_log_str.length() == 0) {
 			return;
 		}
-		
+		if (externalTraceFile.exists() && externalTraceFile.length() > MAX_LOG_SIZE) {
+			externalTraceFile.delete();
+		}
+		FileUtils.appendFile(i_log_str + "\n", externalTraceFile);
 	}
 	
 }

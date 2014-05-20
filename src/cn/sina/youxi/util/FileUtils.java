@@ -63,6 +63,42 @@ public class FileUtils {
 	/**
 	 * 追加方式写文本文件
 	 * @param content
+	 * @param filepath
+	 */
+	public static void appendFile(String content, String filepath){
+		FileWriter writer;
+		try {
+			writer = new FileWriter(filepath, true);
+			writer.write(content);
+			writer.close();
+		}
+		catch (IOException e) {
+			e.printStackTrace();
+			Log.e("FileUtils", "appendFile error:" + e.getStackTrace());
+		}
+	}
+	
+	/**
+	 * 追加方式写文本文件
+	 * @param content
+	 * @param filepath
+	 */
+	public static void appendFile(String content, File file){
+		FileWriter writer;
+		try {
+			writer = new FileWriter(file, true);
+			writer.write(content);
+			writer.close();
+		}
+		catch (IOException e) {
+			e.printStackTrace();
+			Log.e("FileUtils", "appendFile error:" + e.getStackTrace());
+		}
+	}
+	
+	/**
+	 * 追加方式写文本文件
+	 * @param content
 	 * @param folderPath
 	 * @param fileName
 	 */
@@ -74,16 +110,14 @@ public class FileUtils {
 			folder.mkdirs();
 		}
 
-		FileWriter writer;
-		try {
-			writer = new FileWriter(folderPath + fileName, true);
-			writer.write(content);
-			writer.close();
+		StringBuilder stringBuilder = new StringBuilder();
+		stringBuilder.append(folderPath);
+		if (!folderPath.endsWith("\\")) {
+			stringBuilder.append("\\");	
 		}
-		catch (IOException e) {
-			e.printStackTrace();
-			Log.e("FileUtils", "appendFile error:" + e.getStackTrace());
-		}
+		stringBuilder.append(fileName);
+		
+		appendFile(content, stringBuilder.toString());
 	}
 
 	/**
