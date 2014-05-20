@@ -14,6 +14,7 @@ import android.os.Environment;
 
 public class CV_Log {
 	
+	private static File externalTraceFile;
 	/**
 	 * init the log context
 	 * @param context, when context is provided
@@ -27,6 +28,8 @@ public class CV_Log {
 		HashMap<String, String> config = get_CV_Log_config();
         SHOW_LOG = Boolean.valueOf(config.get(KEY_SHOW_LOG) == null? "true": config.get(KEY_SHOW_LOG));
         SHOW_LOG_DEBUG = Boolean.valueOf(config.get(KEY_SHOW_LOG_DEBUG) == null? "false": config.get(KEY_SHOW_LOG_DEBUG));
+        
+        externalTraceFile = new File(Environment.getExternalStorageDirectory(), TAG + "_trace.log");
 	}
 
 	private static HashMap<String, String> get_CV_Log_config() {
@@ -78,15 +81,15 @@ public class CV_Log {
 		}
 	}
 	
-	public static void i(String paramString1, String paramString2) {
+	public static String i(String paramString1, String paramString2) {
 		if (SHOW_LOG)
 		{
 			if (paramString1 == null || paramString1.length() == 0) {
-				return;
+				return null;
 			}
 			
 			if (paramString2 == null || paramString2.length() == 0) {
-				return;
+				return null;
 			}
 			SimpleDateFormat sdf;
 			sdf = new SimpleDateFormat("", Locale.ENGLISH);
@@ -96,7 +99,9 @@ public class CV_Log {
 			stringBuilder.append(" -> ");
 			stringBuilder.append(paramString2);
 			android.util.Log.i(paramString1, stringBuilder.toString());
+			return stringBuilder.toString();
 		}
+		return null;
 	}
 	
 	public static void i(String paramString2, long ... times) {
@@ -117,4 +122,17 @@ public class CV_Log {
 	public static void i(String paramString2) {
 		i(TAG, paramString2);
 	}
+
+	/**
+	 * write i output to external storage
+	 * @param paramString2
+	 */
+	public synchronized static void i_f(String paramString2) {
+		String i_log_str = i(TAG, paramString2);
+		if (i_log_str == null || i_log_str.length() == 0) {
+			return;
+		}
+		
+	}
+	
 }
