@@ -43,7 +43,7 @@ public class TestingActivity extends Activity {
 	RelativeLayout l_btn_group, r_btn_group, word_page;
 	int count, btn_width;
 	Button l_stop_btn, r_stop_btn, l_know_btn, r_know_btn;
-	// lrTranslateAnimation is animation that moves from l to r
+	// lrTranslateAnimation is animation that moves bingo and stop button group from left to right
 	// rlTranslateAnimation otherwise
 	TranslateAnimation lrTranslateAnimation, rlTranslateAnimation;
 	volatile boolean isAnimating = false;
@@ -165,6 +165,9 @@ public class TestingActivity extends Activity {
 		}
 	});
 
+	/**
+	 * after you press start, animation1 for the next word(right in) is executed, not animation2(left out) for current word
+	 */
 	View.OnClickListener stopStartClickListener = new View.OnClickListener() {
 		@Override
 		public void onClick(View v) {
@@ -234,9 +237,10 @@ public class TestingActivity extends Activity {
 	IndexItem mIndexItem;
 	boolean bingoPressed, startPressed;
 
-	// bingo, start button animation
+	// right in left out animation for flipper when you start testing
 	Animation animation1, animation2;
-	// bottom menu animation
+	// bottom menu animation, [memorize][test]
+	// direction: up and down
 	Animation animation3, animation4;
 
 	@SuppressLint("NewApi")
@@ -618,7 +622,6 @@ public class TestingActivity extends Activity {
 
 			@Override
 			public void onAnimationStart(Animation animation) {
-
 				setEnabled(false);
 				String word = null;
 				String word_meaning = null;
@@ -684,11 +687,11 @@ public class TestingActivity extends Activity {
 
 			@Override
 			public void onAnimationStart(Animation animation) {
-				// TODO Auto-generated method stub
 				setEnabled(false);
-
 				if (!TextUtils.isEmpty(currentWord) && !currentWordRemember) {
-					DBManager.getInstance(TestingActivity.this).increaseDifficulty(currentWord);
+					if (test_or_memorize.getTag().equals("want_to_test")) {
+						DBManager.getInstance(TestingActivity.this).increaseDifficulty(currentWord);	
+					}
 				}
 				currentWordRemember = false;
 			}
