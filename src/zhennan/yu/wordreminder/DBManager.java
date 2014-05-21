@@ -224,6 +224,12 @@ public class DBManager {
 	public static final int DELETE_MODE_PHYSICAL = 0;
 	public static final int DELETE_MODE_LOGICAL = 1;
 
+	public void deleteWord(String word_str, int mode) {
+		Word word = new Word();
+		word.word = word_str;
+		deleteWord(word, mode);
+	}
+	
 	public void deleteWord(Word word, int mode) {
 
 		db.beginTransaction();

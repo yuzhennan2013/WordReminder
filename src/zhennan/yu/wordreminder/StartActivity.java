@@ -377,7 +377,7 @@ public class StartActivity extends Activity implements OnScrollListener, OnItemL
 
 		refresh(new RefreshContentFilter(true));
 
-		// dbManager.deleteWord("fuck");
+//		 dbManager.deleteWord("a", DBManager.DELETE_MODE_PHYSICAL);
 		ExternalDBObserver.registerExternalDBObserver(this, new ExternalDBStateListener() {
 
 			@Override
