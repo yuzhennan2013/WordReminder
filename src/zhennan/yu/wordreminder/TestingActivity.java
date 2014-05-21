@@ -1,6 +1,7 @@
 package zhennan.yu.wordreminder;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Random;
 import java.util.concurrent.CountDownLatch;
 
@@ -43,7 +44,8 @@ public class TestingActivity extends Activity {
 	RelativeLayout l_btn_group, r_btn_group, word_page;
 	int count, btn_width;
 	Button l_stop_btn, r_stop_btn, l_know_btn, r_know_btn;
-	// lrTranslateAnimation is animation that moves bingo and stop button group from left to right
+	// lrTranslateAnimation is animation that moves bingo and stop button group
+	// from left to right
 	// rlTranslateAnimation otherwise
 	TranslateAnimation lrTranslateAnimation, rlTranslateAnimation;
 	volatile boolean isAnimating = false;
@@ -61,12 +63,12 @@ public class TestingActivity extends Activity {
 	// words keeps re-ordered set of word
 	volatile ArrayList<WordModel> words, words1;
 	String currentWord;
-	volatile boolean currentWordRemember;
+	boolean currentWordRemember;
 	String lastBtnState;
 	LinearLayout test_or_memorize;
 
 	RefreshContentFilter refreshContentFilter;
-	
+
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		// TODO Auto-generated method stub
@@ -121,6 +123,7 @@ public class TestingActivity extends Activity {
 			// TODO Auto-generated method stub
 			switch (msg.what) {
 			case STARTFLIPPING:
+				Log.i("shit", "STARTFLIPPING " + currentWord);
 				l_stop_btn.setText("stop");
 				r_stop_btn.setText("stop");
 				if (test_or_memorize.getTag().equals("want_to_memorize")) {
@@ -135,8 +138,8 @@ public class TestingActivity extends Activity {
 							// this means that currentWord is not remembered and
 							// should
 							// increase its difficulty
+							Log.i("fuck", "begin to increaseDifficulty " + currentWord);
 							DBManager.getInstance(TestingActivity.this).increaseDifficulty(currentWord);
-							bingoWords.clear();
 						}
 					}
 				}
@@ -166,7 +169,8 @@ public class TestingActivity extends Activity {
 	});
 
 	/**
-	 * after you press start, animation1 for the next word(right in) is executed, not animation2(left out) for current word
+	 * after you press start, animation1 for the next word(right in) is
+	 * executed, not animation2(left out) for current word
 	 */
 	View.OnClickListener stopStartClickListener = new View.OnClickListener() {
 		@Override
@@ -192,28 +196,24 @@ public class TestingActivity extends Activity {
 		}
 	};
 
-	// keep all the words that has been bingoed
-	ArrayList<String> bingoWords;
+	// a hashset that keep all the words that has been bingoed
+	// is appended everytime you click bingo button
+	HashSet<String> bingoWords;
 
 	View.OnClickListener bingoClickListener = new View.OnClickListener() {
 		@Override
 		public void onClick(View v) {
-			synchronized (TestingActivity.class) {
-				bingoPressed = true;
-				String word;
-				if (current_word1.getVisibility() == View.VISIBLE) {
-					word = (String) current_word1.getWord();
-				} else {
-					word = (String) current_word2.getWord();
-				}
-				// to avoid multiple decrease difficulty
-				if (!bingoWords.contains(word)) {
-
-					currentWordRemember = true;
-					DBManager.getInstance(TestingActivity.this).decreaseDifficulty(word);
-					bingoWords.add(word);
-				}
+			bingoPressed = true;
+			String word;
+			if (current_word1.getVisibility() == View.VISIBLE) {
+				word = (String) current_word1.getWord();
+			} else {
+				word = (String) current_word2.getWord();
 			}
+			Log.i("fuck", "begin to decreaseDifficulty " + currentWord);
+			currentWordRemember = true;
+			DBManager.getInstance(TestingActivity.this).decreaseDifficulty(word);
+			bingoWords.add(word);
 		}
 	};
 
@@ -250,7 +250,7 @@ public class TestingActivity extends Activity {
 		cmb = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
 		isBottomMenuShown = true;
 
-		bingoWords = new ArrayList<String>(1);
+		bingoWords = new HashSet<String>();
 		setContentView(R.layout.testing_layout);
 		count = 0;
 		Display display = getWindowManager().getDefaultDisplay();
@@ -259,10 +259,10 @@ public class TestingActivity extends Activity {
 		final int width = size.x;
 
 		mIndexItem = (IndexItem) getIntent().getSerializableExtra("item");
-		
+
 		refreshContentFilter = new RefreshContentFilter(false);
 		refreshContentFilter.addContent(new Content(mIndexItem.initialchar, mIndexItem.groupid));
-		
+
 		Cursor cursor = null;
 		if (mIndexItem.category.equals(Config.CATEGORY_REMEMBERED)) {
 			cursor = DBManager.getInstance(this).queryRememberByInitialCharacter(mIndexItem.initialchar, null, mIndexItem.groupid);
@@ -687,13 +687,17 @@ public class TestingActivity extends Activity {
 
 			@Override
 			public void onAnimationStart(Animation animation) {
-				setEnabled(false);
-				if (!TextUtils.isEmpty(currentWord) && !currentWordRemember) {
-					if (test_or_memorize.getTag().equals("want_to_test")) {
-						DBManager.getInstance(TestingActivity.this).increaseDifficulty(currentWord);	
+				synchronized (TestingActivity.class) {
+					Log.i("shit", "onAnimationStart " + currentWord);
+					setEnabled(false);
+					if (!TextUtils.isEmpty(currentWord) && !currentWordRemember) {
+						if (test_or_memorize.getTag().equals("want_to_test")) {
+							Log.i("fuck", "begin to increaseDifficulty " + currentWord);
+							DBManager.getInstance(TestingActivity.this).increaseDifficulty(currentWord);
+						}
 					}
+					currentWordRemember = false;
 				}
-				currentWordRemember = false;
 			}
 
 			@Override
@@ -704,8 +708,6 @@ public class TestingActivity extends Activity {
 
 			@Override
 			public void onAnimationEnd(Animation animation) {
-				// TODO Auto-generated method stub
-
 				setEnabled(true);
 			}
 		});

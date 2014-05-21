@@ -502,7 +502,6 @@ public class DBManager {
 					c = db.query(DBHelper.TABLE_WORD, new String[] { "difficulty" }, "word = ?", new String[] { word.trim() }, null, null, null);
 					if (c.moveToNext()) {
 						int difficulty = c.getInt(c.getColumnIndex("difficulty"));
-						Log.i(TAG, "decreaseDifficulty word is " + word);
 
 						if (difficulty == 0) {
 							return;
@@ -519,6 +518,7 @@ public class DBManager {
 							cv.put("last_test_result", 1);
 							db.update(DBHelper.TABLE_WORD, cv, "word = ?", new String[] { word.trim() });
 							db.setTransactionSuccessful(); // ��������ɹ����
+							Log.i(TAG, "decreaseDifficulty word is " + word);
 						} finally {
 							db.endTransaction(); // ��������
 						}
