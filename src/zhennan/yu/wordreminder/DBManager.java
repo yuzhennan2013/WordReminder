@@ -451,7 +451,6 @@ public class DBManager {
 							cv.put("last_test_result", 0);
 							db.update(DBHelper.TABLE_WORD, cv, "word = ?", new String[] { word.trim() });
 							db.setTransactionSuccessful();
-							Log.i(TAG, "increaseDifficulty word is " + word);
 						} finally {
 							db.endTransaction();
 						}
@@ -518,7 +517,6 @@ public class DBManager {
 							cv.put("last_test_result", 1);
 							db.update(DBHelper.TABLE_WORD, cv, "word = ?", new String[] { word.trim() });
 							db.setTransactionSuccessful(); // ��������ɹ����
-							Log.i(TAG, "decreaseDifficulty word is " + word);
 						} finally {
 							db.endTransaction(); // ��������
 						}

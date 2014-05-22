@@ -146,6 +146,7 @@ public class TestingActivity extends Activity {
 							DBManager.getInstance(TestingActivity.this).increaseDifficulty(currentWord);
 						}
 					}
+					currentWordRemember = false;
 				}
 				mFlipper.startFlipping();
 				break;
@@ -163,6 +164,7 @@ public class TestingActivity extends Activity {
 					showAppropriateBtnGroup(0);
 				}
 				word_page.setFocusable(true);
+				isBottomMenuShown = false;
 				break;
 			default:
 				break;
@@ -446,7 +448,6 @@ public class TestingActivity extends Activity {
 			@Override
 			public void onAnimationEnd(Animation animation) {
 				test_or_memorize.setVisibility(View.INVISIBLE);
-				isBottomMenuShown = false;
 				handler.sendEmptyMessageDelayed(SHOWBINGOBUTTON, 200);
 			}
 		});
@@ -501,9 +502,10 @@ public class TestingActivity extends Activity {
 
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
-
+				Log.i("fuck", "isBottomMenuShown is " + isBottomMenuShown);
+				Log.i("fuck", "isAnimating is " + isAnimating);
 				if (isAnimating || isBottomMenuShown) {
-					return false;
+					return true;
 				}
 				// TODO Auto-generated method stub
 				if (event.getX() < (width / 2) && l_btn_group.getVisibility() != View.VISIBLE) {
@@ -642,6 +644,7 @@ public class TestingActivity extends Activity {
 					mFlipper.stopFlipping();
 					setBtnText("start");
 					over = true;
+					currentWordRemember = false;
 				} else {
 					// set word for memorization or test
 					if (test_or_memorize.getTag().equals("want_to_memorize")) {
@@ -690,15 +693,13 @@ public class TestingActivity extends Activity {
 
 			@Override
 			public void onAnimationStart(Animation animation) {
-				synchronized (TestingActivity.class) {
-					setEnabled(false);
-					if (!TextUtils.isEmpty(currentWord) && !currentWordRemember) {
-						if (test_or_memorize.getTag().equals("want_to_test")) {
-							DBManager.getInstance(TestingActivity.this).increaseDifficulty(currentWord);
-						}
+				setEnabled(false);
+				if (!TextUtils.isEmpty(currentWord) && !currentWordRemember) {
+					if (test_or_memorize.getTag().equals("want_to_test")) {
+						DBManager.getInstance(TestingActivity.this).increaseDifficulty(currentWord);
 					}
-					currentWordRemember = false;
 				}
+				currentWordRemember = false;
 			}
 
 			@Override
