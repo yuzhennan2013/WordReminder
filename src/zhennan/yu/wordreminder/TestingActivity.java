@@ -502,8 +502,6 @@ public class TestingActivity extends Activity {
 
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
-				Log.i("fuck", "isBottomMenuShown is " + isBottomMenuShown);
-				Log.i("fuck", "isAnimating is " + isAnimating);
 				if (isAnimating || isBottomMenuShown) {
 					return true;
 				}
