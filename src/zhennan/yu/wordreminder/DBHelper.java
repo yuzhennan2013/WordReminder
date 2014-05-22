@@ -1,16 +1,15 @@
 package zhennan.yu.wordreminder;
 
-import cn.sina.youxi.util.CV_Log;
-import android.R.integer;
 import android.content.Context;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.os.SystemClock;
 
 public class DBHelper extends SQLiteOpenHelper{
 	
     public static final String DATABASE_NAME = "wordreminder.db"; 
+    public static final String DATABASE_NAME_SHM = "wordreminder.db-shm"; 
+    public static final String DATABASE_NAME_WAL = "wordreminder.db-wal"; 
+    public static final String [] DB_ARR = {DATABASE_NAME, DATABASE_NAME_SHM, DATABASE_NAME_WAL};
     public static final String TABLE_WORD = "words";
     public static final String TABLE_AVAILABLEGROUP = "available";
     private static final int DATABASE_VERSION = 1;

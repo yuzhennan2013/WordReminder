@@ -80,18 +80,23 @@ public class TestingActivity extends Activity {
 			if (alwaysInMemoriseMode) {
 				startpageNeedRefresh = false;
 			} else {
-				if ((mIndexItem.category.equals(Config.CATEGORY_RANDOM) || mIndexItem.category.equals(Config.CATEGORY_UNTESTED)) && startPressed) {
+				if ((mIndexItem.category.equals(Config.CATEGORY_REMEMBERED) || mIndexItem.category.equals(Config.CATEGORY_UNTESTED) || mIndexItem.category.equals(Config.CATEGORY_RANDOM)) && startPressed) {
 					startpageNeedRefresh = true;
-				} else if ((mIndexItem.category.equals(Config.CATEGORY_FORGOTTEN) || mIndexItem.category.equals(Config.CATEGORY_RANDOM)) && startPressed && bingoPressed) {
-					startpageNeedRefresh = true;
-				} else {
-					startpageNeedRefresh = false;
+					dbNeedExported = true;
+				} else if ((mIndexItem.category.equals(Config.CATEGORY_FORGOTTEN) && startPressed)) {
+					if (bingoPressed) {
+						// optimization: when the words you are testing are all forgotten, and bingo button is never pressed
+						// main page need on refresh
+						startpageNeedRefresh = true;
+					}
+					dbNeedExported = true;
 				}
 			}
 			CV_Log.i_f("startpageNeedRefresh is " + startpageNeedRefresh);
 			Intent resultIntent = new Intent();
-			resultIntent.putExtra("startpageNeedRefresh", startpageNeedRefresh);
-			resultIntent.putExtra("refreshContentFilter", refreshContentFilter);
+			resultIntent.putExtra(Config.NEED_REFRESH, startpageNeedRefresh);
+			resultIntent.putExtra(Config.NEED_EXPORTDB, dbNeedExported);
+			resultIntent.putExtra(Config.REFRESH_CONTENT, refreshContentFilter);
 			setResult(RESULT_OK, resultIntent);
 			finish();
 			CV_Log.i_f(TAG + " finished !");
@@ -110,7 +115,8 @@ public class TestingActivity extends Activity {
 	}
 
 	// notify if startpage need to refresh itself
-	boolean startpageNeedRefresh;
+	boolean startpageNeedRefresh = false;
+	boolean dbNeedExported = false;
 	boolean alwaysInMemoriseMode = true;
 
 	final int STARTFLIPPING = 1;
@@ -123,7 +129,6 @@ public class TestingActivity extends Activity {
 			// TODO Auto-generated method stub
 			switch (msg.what) {
 			case STARTFLIPPING:
-				Log.i("shit", "STARTFLIPPING " + currentWord);
 				l_stop_btn.setText("stop");
 				r_stop_btn.setText("stop");
 				if (test_or_memorize.getTag().equals("want_to_memorize")) {
@@ -138,7 +143,6 @@ public class TestingActivity extends Activity {
 							// this means that currentWord is not remembered and
 							// should
 							// increase its difficulty
-							Log.i("fuck", "begin to increaseDifficulty " + currentWord);
 							DBManager.getInstance(TestingActivity.this).increaseDifficulty(currentWord);
 						}
 					}
@@ -210,7 +214,6 @@ public class TestingActivity extends Activity {
 			} else {
 				word = (String) current_word2.getWord();
 			}
-			Log.i("fuck", "begin to decreaseDifficulty " + currentWord);
 			currentWordRemember = true;
 			DBManager.getInstance(TestingActivity.this).decreaseDifficulty(word);
 			bingoWords.add(word);
@@ -688,11 +691,9 @@ public class TestingActivity extends Activity {
 			@Override
 			public void onAnimationStart(Animation animation) {
 				synchronized (TestingActivity.class) {
-					Log.i("shit", "onAnimationStart " + currentWord);
 					setEnabled(false);
 					if (!TextUtils.isEmpty(currentWord) && !currentWordRemember) {
 						if (test_or_memorize.getTag().equals("want_to_test")) {
-							Log.i("fuck", "begin to increaseDifficulty " + currentWord);
 							DBManager.getInstance(TestingActivity.this).increaseDifficulty(currentWord);
 						}
 					}

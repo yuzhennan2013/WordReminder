@@ -23,64 +23,88 @@ import eu.chainfire.libsuperuser.Shell;
  */
 public class DBStorageManager {
 
-	public static void importDBIntoReminder(Context context) {
-		try {
-			File sd = Environment.getExternalStorageDirectory();
-			File data = Environment.getDataDirectory();
+	public static void importDB(Context context, File DBFile) {
+		if (DBFile == null) {
+			return;
+		}
+		
+		if (!DBFile.canRead()) {
+			CV_Log.i("can't read " + DBFile.getAbsolutePath());
+			return;
+		}
 
-			if (sd.canRead()) {
-				String internalDBPath = "//data//" + context.getPackageName() + "//databases//" + DBHelper.DATABASE_NAME;
-				File internalDB = new File(data, internalDBPath);
-				File sdDB = new File(Config.BACKUPDBPATH);
-				if (!sdDB.exists()) {
-					CV_Log.i("can't find db file on " + Config.BACKUPDBPATH);
-					return;
-				}
-				FileInputStream srcInputStream = new FileInputStream(sdDB);
-				FileChannel src = srcInputStream.getChannel();
-				FileOutputStream dstOutputStream = new FileOutputStream(internalDB);
-				FileChannel dst = dstOutputStream.getChannel();
-				dst.transferFrom(src, 0, src.size());
-				src.close();
-				dst.close();
-				srcInputStream.close();
-				dstOutputStream.close();
-				CV_Log.i("import db file into internal memory successfully !");
-			} else {
-				CV_Log.i("SD card can't be read");
-			}
+		File data_dir = Environment.getDataDirectory();
+		File internalDB = new File(data_dir, "//data//" + context.getPackageName() + "//databases//" + DBFile.getName());
+
+		try {
+			FileInputStream srcInputStream = new FileInputStream(DBFile);
+			FileChannel src = srcInputStream.getChannel();
+			FileOutputStream dstOutputStream = new FileOutputStream(internalDB);
+			FileChannel dst = dstOutputStream.getChannel();
+			dst.transferFrom(src, 0, src.size());
+			src.close();
+			dst.close();
+			srcInputStream.close();
+			dstOutputStream.close();
+			CV_Log.i("successfully import " + DBFile.getAbsolutePath());
 		} catch (Exception e) {
-			CV_Log.i("IOException occurs");
 			e.printStackTrace();
+		}
+
+	}
+
+	public static void importDB(Context context) {
+
+		File external_storage = Environment.getExternalStorageDirectory();
+		File external_db_file = null;
+		for (int i = 0; i < DBHelper.DB_ARR.length; i++) {
+			external_db_file = new File(external_storage, DBHelper.DB_ARR[i]);
+			importDB(context, external_db_file);
 		}
 	}
 
-	public static void exportDBIntoSD(Context context) {
+	public static void exportDB(Context context, File DBFile) {
+
+		if (DBFile == null) {
+			return;
+		}
+
+		if (!DBFile.canRead()) {
+			CV_Log.i("can't read " + DBFile.getAbsolutePath());
+			return;
+		}
+
+		File external_storage = Environment.getExternalStorageDirectory();
+		if (!external_storage.canWrite()) {
+			CV_Log.i("can't write to " + external_storage.getAbsolutePath());
+			return;
+		}
+
+		File externalDB = new File(external_storage, DBFile.getName());
+		
 		try {
-			File sd = Environment.getExternalStorageDirectory();
-			File data = Environment.getDataDirectory();
-
-			if (sd.canWrite()) {
-				String currentDBPath = "//data//" + context.getPackageName() + "//databases//" + DBHelper.DATABASE_NAME;
-
-				File currentDB = new File(data, currentDBPath);
-				File backupDB = new File(Config.BACKUPDBPATH);
-
-				FileInputStream srcInputStream = new FileInputStream(currentDB);
-				FileChannel src = srcInputStream.getChannel();
-				FileOutputStream dstOutputStream = new FileOutputStream(backupDB);
-				FileChannel dst = dstOutputStream.getChannel();
-				dst.transferFrom(src, 0, src.size());
-				src.close();
-				dst.close();
-				srcInputStream.close();
-				dstOutputStream.close();
-				CV_Log.i("export internal db successfully");
-			} else {
-				CV_Log.i("SD card can't be written");
-			}
+			FileInputStream srcInputStream = new FileInputStream(DBFile);
+			FileChannel src = srcInputStream.getChannel();
+			FileOutputStream dstOutputStream = new FileOutputStream(externalDB);
+			FileChannel dst = dstOutputStream.getChannel();
+			dst.transferFrom(src, 0, src.size());
+			src.close();
+			dst.close();
+			srcInputStream.close();
+			dstOutputStream.close();
+			CV_Log.i("successfully export " + DBFile.getAbsolutePath());
 		} catch (Exception e) {
 			e.printStackTrace();
+		}
+
+	}
+
+	public static void exportDB(Context context) {
+		File internal_data_storage = Environment.getDataDirectory();
+		File internal_db_file = null;
+		for (int i = 0; i < DBHelper.DB_ARR.length; i++) {
+			internal_db_file = new File(internal_data_storage, "//data//" + context.getPackageName() + "//databases//" + DBHelper.DB_ARR[i]);
+			exportDB(context, internal_db_file);
 		}
 	}
 
@@ -106,8 +130,9 @@ public class DBStorageManager {
 	}
 
 	/**
-	 * when check if a sync operation is over
-	 * you just check (key = youdaoDB last_modify, value = true / false)
+	 * when check if a sync operation is over you just check (key = youdaoDB
+	 * last_modify, value = true / false)
+	 * 
 	 * @param context
 	 * @return
 	 */
@@ -159,8 +184,10 @@ public class DBStorageManager {
 	static File tempDB;
 
 	/**
-	 * indicates whether synchronization from third party db to local db is needed
-	 * if needed, third party db will be copied to external storage with the name temp.db
+	 * indicates whether synchronization from third party db to local db is
+	 * needed if needed, third party db will be copied to external storage with
+	 * the name temp.db
+	 * 
 	 * @return
 	 */
 	public static boolean shouldDoSync(Context context) {

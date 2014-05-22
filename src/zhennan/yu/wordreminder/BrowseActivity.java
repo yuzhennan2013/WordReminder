@@ -54,8 +54,9 @@ public class BrowseActivity extends Activity implements
 		// TODO Auto-generated method stub
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
 			Intent resultIntent = new Intent();
-			resultIntent.putExtra("startpageNeedRefresh", browseAdapter.startpageNeedRefresh);
-			resultIntent.putExtra("refreshContentFilter", refreshContentFilter);
+			resultIntent.putExtra(Config.NEED_REFRESH, browseAdapter.startpageNeedRefresh);
+			resultIntent.putExtra(Config.REFRESH_CONTENT, refreshContentFilter);
+			resultIntent.putExtra(Config.NEED_EXPORTDB, false);
 			setResult(RESULT_OK, resultIntent);
 			finish();
 		}
@@ -167,7 +168,7 @@ public class BrowseActivity extends Activity implements
 			break;
 		case MotionEvent.ACTION_UP:
 			handsOff = true;
-			if (mIndexItem.category.equals(Config.CATEGORY_RANDOM) || mIndexItem.category.equals(Config.CATEGORY_UNTESTED)) {
+			if (mIndexItem.category.equals(Config.CATEGORY_REMEMBERED) || mIndexItem.category.equals(Config.CATEGORY_UNTESTED)) {
 				return false;
 			}
 			if (System.currentTimeMillis() - pressTime < 150) {

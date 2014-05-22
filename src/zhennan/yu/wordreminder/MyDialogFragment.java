@@ -54,20 +54,20 @@ public class MyDialogFragment extends DialogFragment{
                         et.startAnimation(shake);
                     	return;
 					}
-                    if (path.equals("1")) {
-						Config.BACKUPDBPATH = et.getText().toString().trim();
-						SharedPreferences sharedPreferences = getActivity().getSharedPreferences("path", Context.MODE_PRIVATE);
-						Editor editor = sharedPreferences.edit();
-						editor.putString("BACKUPDBPATH", Config.BACKUPDBPATH);
-						editor.commit();//�ύ�޸�
-					}
-                    else {
-                    	Config.SDWORDXMLPATH = et.getText().toString().trim();
-                    	SharedPreferences sharedPreferences = getActivity().getSharedPreferences("path", Context.MODE_PRIVATE);
-                		Editor editor = sharedPreferences.edit();//��ȡ�༭��
-                		editor.putString("SDWORDXMLPATH", Config.SDWORDXMLPATH);
-                		editor.commit();//�ύ�޸�
-					}
+//                    if (path.equals("1")) {
+//						Config.BACKUPDBPATH = et.getText().toString().trim();
+//						SharedPreferences sharedPreferences = getActivity().getSharedPreferences("path", Context.MODE_PRIVATE);
+//						Editor editor = sharedPreferences.edit();
+//						editor.putString("BACKUPDBPATH", Config.BACKUPDBPATH);
+//						editor.commit();//�ύ�޸�
+//					}
+//                    else {
+//                    	Config.SDWORDXMLPATH = et.getText().toString().trim();
+//                    	SharedPreferences sharedPreferences = getActivity().getSharedPreferences("path", Context.MODE_PRIVATE);
+//                		Editor editor = sharedPreferences.edit();//��ȡ�༭��
+//                		editor.putString("SDWORDXMLPATH", Config.SDWORDXMLPATH);
+//                		editor.commit();//�ύ�޸�
+//					}
                     dismiss();
                 }
             });

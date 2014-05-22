@@ -1,8 +1,13 @@
 package zhennan.yu.wordreminder;
 
 public class Config {
-	public static String SDWORDXMLPATH = "";
-	public static String BACKUPDBPATH  = "";
+//	public static String SDWORDXMLPATH = "";
+//	public static String BACKUPDBPATH  = "";
+	
+	public static String NEED_REFRESH = "startpageNeedRefresh";
+	public static String NEED_EXPORTDB = "dbNeedExported";
+	public static String REFRESH_CONTENT = "refreshContentFilter";
+	
 	public static String YOUDAODICPACNAME = "com.youdao.dict";
 	public static short MAXDIFFICULTY = 20;
 	public static short RANDOMTESTSIZE = 100;

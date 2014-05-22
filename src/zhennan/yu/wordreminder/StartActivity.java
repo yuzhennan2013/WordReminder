@@ -339,8 +339,13 @@ public class StartActivity extends Activity implements OnScrollListener, OnItemL
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if (data != null && data.getExtras().getBoolean("startpageNeedRefresh")) {
-			RefreshContentFilter refreshContentFilter = (RefreshContentFilter) data.getSerializableExtra("refreshContentFilter");
+		
+		if (data != null && data.getExtras().getBoolean(Config.NEED_EXPORTDB)) {
+			DBStorageManager.exportDB(StartActivity.this);
+		}
+		
+		if (data != null && data.getExtras().getBoolean(Config.NEED_REFRESH)) {
+			RefreshContentFilter refreshContentFilter = (RefreshContentFilter) data.getSerializableExtra(Config.REFRESH_CONTENT);
 			refresh(refreshContentFilter);
 		}
 		super.onActivityResult(requestCode, resultCode, data);
@@ -356,17 +361,17 @@ public class StartActivity extends Activity implements OnScrollListener, OnItemL
 
 		WordReminderFloatView.getFloatView(this).show();
 
-		SharedPreferences sharedPreferences = getSharedPreferences("path", Context.MODE_PRIVATE);
-		Config.SDWORDXMLPATH = sharedPreferences.getString("SDWORDXMLPATH", Environment.getExternalStorageDirectory().getAbsolutePath() + "/word.xml");
-		Config.BACKUPDBPATH = sharedPreferences.getString("BACKUPDBPATH", Environment.getExternalStorageDirectory() + "/" + DBHelper.DATABASE_NAME);
+//		SharedPreferences sharedPreferences = getSharedPreferences("path", Context.MODE_PRIVATE);
+//		Config.SDWORDXMLPATH = sharedPreferences.getString("SDWORDXMLPATH", Environment.getExternalStorageDirectory().getAbsolutePath() + "/word.xml");
+//		Config.BACKUPDBPATH = sharedPreferences.getString("BACKUPDBPATH", Environment.getExternalStorageDirectory() + "/" + DBHelper.DATABASE_NAME);
 
 		dbManager = DBManager.getInstance(this);
 		if (dbManager.getTotalCnt() == 0) {
 			// database is empty, use saved wordreminder database if there is
 			// any
-			DBStorageManager.importDBIntoReminder(this);
 			dbManager.close();
 			dbManager = null;
+			DBStorageManager.importDB(this);
 			dbManager = DBManager.getInstance(this);
 		}
 		textView = (TextView) findViewById(R.id.no_word_textview);
@@ -387,7 +392,7 @@ public class StartActivity extends Activity implements OnScrollListener, OnItemL
 				if (refreshContentFilter != null) {
 					refresh(refreshContentFilter);
 				}
-				DBStorageManager.exportDBIntoSD(StartActivity.this);
+				DBStorageManager.exportDB(StartActivity.this);
 				DBStorageManager.markSyncFinished(StartActivity.this);
 			}
 		});
