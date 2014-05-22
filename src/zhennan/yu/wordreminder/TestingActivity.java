@@ -165,6 +165,7 @@ public class TestingActivity extends Activity {
 				}
 				word_page.setFocusable(true);
 				isBottomMenuShown = false;
+				currentWordRemember = false;
 				break;
 			default:
 				break;
@@ -642,7 +643,6 @@ public class TestingActivity extends Activity {
 					mFlipper.stopFlipping();
 					setBtnText("start");
 					over = true;
-					currentWordRemember = false;
 				} else {
 					// set word for memorization or test
 					if (test_or_memorize.getTag().equals("want_to_memorize")) {
