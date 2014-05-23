@@ -48,6 +48,7 @@ public class TestingActivity extends Activity {
 	// from left to right
 	// rlTranslateAnimation otherwise
 	TranslateAnimation lrTranslateAnimation, rlTranslateAnimation;
+	// check if bingo button group is currently animating(that's from left to right or from right to left)
 	volatile boolean isAnimating = false;
 	boolean isBottomMenuShown = false;
 
@@ -419,6 +420,12 @@ public class TestingActivity extends Activity {
 			@Override
 			public void onAnimationStart(Animation animation) {
 				isBottomMenuShown = true;
+				if (lrTranslateAnimation != null) {
+					lrTranslateAnimation.cancel();	
+				}
+				if (rlTranslateAnimation != null) {
+					rlTranslateAnimation.cancel();	
+				}
 			}
 
 			@Override
@@ -532,11 +539,13 @@ public class TestingActivity extends Activity {
 								// TODO Auto-generated method stub
 								setEnabled(true);
 								isAnimating = false;
-								l_btn_group.setVisibility(View.VISIBLE);
 								r_btn_group.setVisibility(View.GONE);
-								// remember where is the test btn
-								// next time wont bother you to move manually
-								editor.putInt("testbtn_gravity", 0).commit();
+								if (!isBottomMenuShown) {
+									l_btn_group.setVisibility(View.VISIBLE);
+									// remember where is the test btn
+									// next time wont bother you to move manually
+									editor.putInt("testbtn_gravity", 0).commit();
+								}
 							}
 						});
 					}
@@ -568,10 +577,12 @@ public class TestingActivity extends Activity {
 								setEnabled(true);
 								isAnimating = false;
 								l_btn_group.setVisibility(View.GONE);
-								r_btn_group.setVisibility(View.VISIBLE);
-								// remember where is the test btn
-								// next time wont bother you to move manually
-								editor.putInt("testbtn_gravity", 1).commit();
+								if (!isBottomMenuShown) {
+									r_btn_group.setVisibility(View.VISIBLE);
+									// remember where is the test btn
+									// next time wont bother you to move manually
+									editor.putInt("testbtn_gravity", 1).commit();
+								}
 							}
 						});
 					}
