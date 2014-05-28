@@ -166,7 +166,6 @@ public class WordReminderFloatView extends FloatView implements OnActionDownList
 		@Override
 		public void run() {
 			while (!isFingerUp() || mode == 0) {
-
 				// if you finger is not up, bringTaskToFront will be executed
 				// continuously
 				// get current OS launcher package name

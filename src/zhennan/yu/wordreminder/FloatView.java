@@ -14,6 +14,7 @@ import android.graphics.PixelFormat;
 import android.graphics.Point;
 import android.os.AsyncTask;
 import android.os.SystemClock;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -738,6 +739,7 @@ public class FloatView extends RelativeLayout implements ScreenStateListener{
 
 	@Override
 	public void onOrientationChanged(int orientation) {
+		fingerUP = true;
 		if (dockingTask != null) {
 			// while to avoid potential synchronization problem
 			while (!dockingTask.isCancelled()) {
