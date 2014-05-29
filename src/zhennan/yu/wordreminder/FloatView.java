@@ -227,17 +227,6 @@ public class FloatView extends RelativeLayout implements ScreenStateListener{
 		else {
 			mWindowMgrParams.x = xMovementLimit;	
 		}
-		float ratio = 0.0f;
-		if (orientation == ScreenStateListener.ORIENTATION_LANDSCAPE) {
-			// for example , if round button is at the lower half part when portrait
-			// it will keep its relative position to screen height when orientation is landscape
-			ratio = (float)location[1] / screendimension.y;
-			mWindowMgrParams.y = (int) (ratio * screendimension.x);
-		}
-		else {
-			ratio = (float)location[1] / screendimension.x;
-			mWindowMgrParams.y = (int) (ratio * screendimension.y);
-		}
 		mWindowManager.updateViewLayout(this, mWindowMgrParams);
 	}
 	

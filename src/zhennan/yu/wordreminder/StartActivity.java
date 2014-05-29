@@ -22,6 +22,7 @@ import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Environment;
@@ -349,6 +350,12 @@ public class StartActivity extends Activity implements OnScrollListener, OnItemL
 			refresh(refreshContentFilter);
 		}
 		super.onActivityResult(requestCode, resultCode, data);
+	}
+
+	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+		// TODO Auto-generated method stub
+		super.onConfigurationChanged(newConfig);
 	}
 
 	@Override

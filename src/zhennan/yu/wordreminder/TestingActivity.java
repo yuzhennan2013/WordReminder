@@ -15,6 +15,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.content.res.Configuration;
 import android.database.Cursor;
 import android.graphics.Point;
 import android.os.Bundle;
@@ -69,6 +70,12 @@ public class TestingActivity extends Activity {
 	LinearLayout test_or_memorize;
 
 	RefreshContentFilter refreshContentFilter;
+
+	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+		// TODO Auto-generated method stub
+		super.onConfigurationChanged(newConfig);
+	}
 
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
