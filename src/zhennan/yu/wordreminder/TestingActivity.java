@@ -160,7 +160,6 @@ public class TestingActivity extends Activity {
 				mFlipper.startFlipping();
 				break;
 			case SHOWBOTTOMMENU:
-				setVisibility(View.INVISIBLE);
 				word_page.setFocusable(false);
 				test_or_memorize.startAnimation(animation3);
 				break;
@@ -191,6 +190,9 @@ public class TestingActivity extends Activity {
 	View.OnClickListener stopStartClickListener = new View.OnClickListener() {
 		@Override
 		public void onClick(View v) {
+			if (isBottomMenuShown) {
+				return;
+			}
 			if (l_know_btn.getVisibility() == View.VISIBLE) {
 				startPressed = true;
 			}
@@ -424,12 +426,7 @@ public class TestingActivity extends Activity {
 			@Override
 			public void onAnimationStart(Animation animation) {
 				isBottomMenuShown = true;
-				if (lrTranslateAnimation != null) {
-					lrTranslateAnimation.cancel();	
-				}
-				if (rlTranslateAnimation != null) {
-					rlTranslateAnimation.cancel();	
-				}
+				setVisibility(View.INVISIBLE);
 			}
 
 			@Override
@@ -522,80 +519,80 @@ public class TestingActivity extends Activity {
 				Point size = new Point();
 				display.getSize(size);
 				final int width = size.x;
-				
+
 				// TODO Auto-generated method stub
 				if (event.getX() < (width / 2) && l_btn_group.getVisibility() != View.VISIBLE) {
-					if (rlTranslateAnimation == null) {
-						rlTranslateAnimation = new TranslateAnimation(0, -(width - btn_width), 0, 0);
-						rlTranslateAnimation.setInterpolator(AnimationUtils.loadInterpolator(TestingActivity.this, android.R.anim.accelerate_decelerate_interpolator));
-						rlTranslateAnimation.setDuration(400);
-						rlTranslateAnimation.setAnimationListener(new AnimationListener() {
 
-							@Override
-							public void onAnimationStart(Animation animation) {
-								// TODO Auto-generated method stub
-								setEnabled(false);
-								isAnimating = true;
+					rlTranslateAnimation = new TranslateAnimation(0, -(width - btn_width), 0, 0);
+					rlTranslateAnimation.setInterpolator(AnimationUtils.loadInterpolator(TestingActivity.this, android.R.anim.accelerate_decelerate_interpolator));
+					rlTranslateAnimation.setDuration(400);
+					rlTranslateAnimation.setAnimationListener(new AnimationListener() {
+
+						@Override
+						public void onAnimationStart(Animation animation) {
+							// TODO Auto-generated method stub
+							setEnabled(false);
+							isAnimating = true;
+						}
+
+						@Override
+						public void onAnimationRepeat(Animation animation) {
+							// TODO Auto-generated method stub
+
+						}
+
+						@Override
+						public void onAnimationEnd(Animation animation) {
+							// TODO Auto-generated method stub
+							setEnabled(true);
+							isAnimating = false;
+							r_btn_group.setVisibility(View.GONE);
+							if (!isBottomMenuShown) {
+								l_btn_group.setVisibility(View.VISIBLE);
+								// remember where is the test btn
+								// next time wont bother you to move manually
+								editor.putInt("testbtn_gravity", 0).commit();
 							}
-
-							@Override
-							public void onAnimationRepeat(Animation animation) {
-								// TODO Auto-generated method stub
-
-							}
-
-							@Override
-							public void onAnimationEnd(Animation animation) {
-								// TODO Auto-generated method stub
-								setEnabled(true);
-								isAnimating = false;
-								r_btn_group.setVisibility(View.GONE);
-								if (!isBottomMenuShown) {
-									l_btn_group.setVisibility(View.VISIBLE);
-									// remember where is the test btn
-									// next time wont bother you to move manually
-									editor.putInt("testbtn_gravity", 0).commit();
-								}
-							}
-						});
-					}
+						}
+					});
+				
 					r_btn_group.startAnimation(rlTranslateAnimation);
 				} else if (event.getX() >= (width / 2) && r_btn_group.getVisibility() != View.VISIBLE) {
-					if (lrTranslateAnimation == null) {
-						lrTranslateAnimation = new TranslateAnimation(0, width - btn_width, 0, 0);
 
-						lrTranslateAnimation.setDuration(400);
-						lrTranslateAnimation.setInterpolator(AnimationUtils.loadInterpolator(TestingActivity.this, android.R.anim.accelerate_decelerate_interpolator));
-						lrTranslateAnimation.setAnimationListener(new AnimationListener() {
+					lrTranslateAnimation = new TranslateAnimation(0, width - btn_width, 0, 0);
 
-							@Override
-							public void onAnimationStart(Animation animation) {
-								// TODO Auto-generated method stub
-								setEnabled(false);
-								isAnimating = true;
+					lrTranslateAnimation.setDuration(400);
+					lrTranslateAnimation.setInterpolator(AnimationUtils.loadInterpolator(TestingActivity.this, android.R.anim.accelerate_decelerate_interpolator));
+					lrTranslateAnimation.setAnimationListener(new AnimationListener() {
+
+						@Override
+						public void onAnimationStart(Animation animation) {
+							// TODO Auto-generated method stub
+							setEnabled(false);
+							isAnimating = true;
+						}
+
+						@Override
+						public void onAnimationRepeat(Animation animation) {
+							// TODO Auto-generated method stub
+
+						}
+
+						@Override
+						public void onAnimationEnd(Animation animation) {
+							// TODO Auto-generated method stub
+							setEnabled(true);
+							isAnimating = false;
+							l_btn_group.setVisibility(View.GONE);
+							if (!isBottomMenuShown) {
+								r_btn_group.setVisibility(View.VISIBLE);
+								// remember where is the test btn
+								// next time wont bother you to move manually
+								editor.putInt("testbtn_gravity", 1).commit();
 							}
-
-							@Override
-							public void onAnimationRepeat(Animation animation) {
-								// TODO Auto-generated method stub
-
-							}
-
-							@Override
-							public void onAnimationEnd(Animation animation) {
-								// TODO Auto-generated method stub
-								setEnabled(true);
-								isAnimating = false;
-								l_btn_group.setVisibility(View.GONE);
-								if (!isBottomMenuShown) {
-									r_btn_group.setVisibility(View.VISIBLE);
-									// remember where is the test btn
-									// next time wont bother you to move manually
-									editor.putInt("testbtn_gravity", 1).commit();
-								}
-							}
-						});
-					}
+						}
+					});
+				
 					l_btn_group.startAnimation(lrTranslateAnimation);
 				}
 				return false;
@@ -652,12 +649,14 @@ public class TestingActivity extends Activity {
 				String word_meaning = null;
 				boolean over = false;
 				if (count >= words.size()) {
+					setVisibility(View.INVISIBLE);
+					isBottomMenuShown = true;
 					word = "";
 					word_meaning = "";
 					count = 0;
-					Toast.makeText(TestingActivity.this, "all words in this category have been played", 1000).show();
+					Toast.makeText(TestingActivity.this, "all words in this category have been played", Toast.LENGTH_SHORT).show();
 					// test over, all words has been tested
-					handler.sendEmptyMessageDelayed(SHOWBOTTOMMENU, 1000);
+					handler.sendEmptyMessageDelayed(SHOWBOTTOMMENU, Toast.LENGTH_SHORT);
 					bingoWords.clear();
 					lastBtnState = null;
 					setEnabled(true);
