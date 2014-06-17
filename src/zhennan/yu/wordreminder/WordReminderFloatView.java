@@ -17,6 +17,7 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.content.res.Resources;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
@@ -208,6 +209,7 @@ public class WordReminderFloatView extends FloatView implements OnActionDownList
 
 						continue;
 					}
+
 					// Message message = Message.obtain();
 					// message.arg1 = info.id;
 					// message.what = BRINGTASKFRONT;

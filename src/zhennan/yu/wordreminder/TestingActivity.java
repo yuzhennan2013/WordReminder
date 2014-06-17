@@ -75,6 +75,7 @@ public class TestingActivity extends Activity {
 	public void onConfigurationChanged(Configuration newConfig) {
 		// TODO Auto-generated method stub
 		super.onConfigurationChanged(newConfig);
+		
 	}
 
 	@Override
@@ -267,10 +268,6 @@ public class TestingActivity extends Activity {
 		bingoWords = new HashSet<String>();
 		setContentView(R.layout.testing_layout);
 		count = 0;
-		Display display = getWindowManager().getDefaultDisplay();
-		Point size = new Point();
-		display.getSize(size);
-		final int width = size.x;
 
 		mIndexItem = (IndexItem) getIntent().getSerializableExtra("item");
 
@@ -296,7 +293,7 @@ public class TestingActivity extends Activity {
 
 		initBottomTestOrMemorizeButton();
 
-		initBingoStartButton(width);
+		initBingoStartButton();
 
 		initFlipper();
 	}
@@ -500,7 +497,7 @@ public class TestingActivity extends Activity {
 	 * @param width
 	 *            the width of the screen
 	 */
-	private void initBingoStartButton(final int width) {
+	private void initBingoStartButton() {
 		l_btn_group = ((RelativeLayout) this.findViewById(R.id.l_btn_group));
 		l_stop_btn = (Button) l_btn_group.findViewById(R.id.l_stop_btn);
 		l_stop_btn.setOnClickListener(stopStartClickListener);
@@ -520,6 +517,12 @@ public class TestingActivity extends Activity {
 				if (isAnimating || isBottomMenuShown) {
 					return true;
 				}
+				
+				Display display = getWindowManager().getDefaultDisplay();
+				Point size = new Point();
+				display.getSize(size);
+				final int width = size.x;
+				
 				// TODO Auto-generated method stub
 				if (event.getX() < (width / 2) && l_btn_group.getVisibility() != View.VISIBLE) {
 					if (rlTranslateAnimation == null) {
